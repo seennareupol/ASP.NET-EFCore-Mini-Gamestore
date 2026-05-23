@@ -37,7 +37,7 @@ const Home: React.FC = () => {
     };
 
     useEffect(() => {
-        document.title = 'Game Store';
+        document.title = 'Game Store: SEEN NAREUPOL';
         fetchGames();
     }, []);
 
@@ -88,15 +88,15 @@ const Home: React.FC = () => {
     if (loadingErrorList.length > 0) {
         return (
             <div>
-                <div className="row mt-2">
-                    <div className="col">
-                        <Link className="btn btn-primary" to="/editgame" role="button">
-                            New Game
-                        </Link>
-                    </div>
+                <div className="page-header">
+                    <h2>Games</h2>
+                    <Link className="btn btn-primary shadow-sm" to="/editgame" role="button">
+                        <i className="bi bi-plus-lg me-1"></i> New Game
+                    </Link>
                 </div>
                 {loadingErrorList.map((error, index) => (
-                    <div key={index} className="mt-3 text-danger">
+                    <div key={index} className="mt-3 alert alert-danger border-0">
+                        <i className="bi bi-exclamation-triangle me-2"></i>
                         <em>Error loading games: {error}</em>
                     </div>
                 ))}
@@ -106,12 +106,11 @@ const Home: React.FC = () => {
 
     return (
         <div>
-            <div className="row mt-2">
-                <div className="col">
-                    <Link className="btn btn-primary" to="/editgame" role="button">
-                        New Game
-                    </Link>
-                </div>
+            <div className="page-header">
+                <h2>Games</h2>
+                <Link className="btn btn-primary shadow-sm" to="/editgame" role="button">
+                    <i className="bi bi-plus-lg me-1"></i> New Game
+                </Link>
             </div>
 
             {errorList.length > 0 && (
@@ -125,41 +124,43 @@ const Home: React.FC = () => {
             )}
 
             {games.length === 0 ? (
-                <div className="mt-3">
+                <div className="mt-3 text-muted">
                     <p><em>No games found. Click "New Game" to add your first game!</em></p>
                 </div>
             ) : (
-                <table className="table table-striped table-bordered table-hover mt-3">
-                    <thead className="table-dark">
-                        <tr>
-                            <th>Name</th>
-                            <th>Genre</th>
-                            <th className="text-end">Price</th>
-                            <th>Release Date</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {games.map((game) => (
-                            <tr key={game.id}>
-                                <td>{game.name}</td>
-                                <td>{game.genre}</td>
-                                <td className="text-end">${game.price}</td>
-                                <td>{game.releaseDate}</td>
-                                <td>
-                                    <div className="d-flex">
-                                        <Link className="btn btn-primary me-2" to={`/editgame/${game.id}`} role="button">
-                                            <i className="bi bi-pencil"></i>
-                                        </Link>
-                                        <button className="btn btn-danger" onClick={() => setGameToDelete(game)}>
-                                            <i className="bi bi-x-lg"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                <div className="table-container shadow-lg">
+                    <table className="table table-hover table-borderless mb-0">
+                        <thead className="table-dark">
+                            <tr>
+                                <th>Name</th>
+                                <th>Genre</th>
+                                <th className="text-end">Price</th>
+                                <th>Release Date</th>
+                                <th className="text-end">Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {games.map((game) => (
+                                <tr key={game.id}>
+                                    <td className="fw-semibold">{game.name}</td>
+                                    <td><span className="badge-genre">{game.genre}</span></td>
+                                    <td className="text-end font-monospace">${game.price.toFixed(2)}</td>
+                                    <td className="text-muted">{game.releaseDate}</td>
+                                    <td>
+                                        <div className="d-flex justify-content-end">
+                                            <Link className="btn btn-sm btn-outline-secondary me-2 border-0" to={`/editgame/${game.id}`} role="button">
+                                                <i className="bi bi-pencil"></i>
+                                            </Link>
+                                            <button className="btn btn-sm btn-danger px-2 border-0" onClick={() => setGameToDelete(game)}>
+                                                <i className="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             )}
 
             {/* Delete Confirmation Modal */}

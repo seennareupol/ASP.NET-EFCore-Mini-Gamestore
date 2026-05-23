@@ -95,54 +95,57 @@ const EditGame: React.FC = () => {
     }
 
     if (!genres || !game) {
-        return <p className="mt-3"><em>Loading...</em></p>;
+        return <p className="mt-3 text-muted"><em>Loading...</em></p>;
     }
 
     return (
-        <div>
-            <h3>{title}</h3>
-            {errorList.length > 0 && (
-                <div className="modal-body mt-3">
-                    {errorList.map((error, index) => (
-                        <div key={index} className="alert alert-danger">
-                            {error}
-                        </div>
-                    ))}
-                </div>
-            )}
-            <div className="row mb-2">
-                <div className="col-md-4">
-                    <form onSubmit={handleSubmit} encType="multipart/form-data">
-                        <div className="mb-3">
-                            <label htmlFor="name" className="form-label">Name:</label>
-                            <input
-                                id="name"
-                                name="name"
-                                type="text"
-                                value={game.name}
-                                onChange={handleInputChange}
-                                className="form-control"
-                                required
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="genre" className="form-label">Genre:</label>
-                            <select
-                                id="genre"
-                                name="genreId"
-                                value={game.genreId || ''}
-                                onChange={handleInputChange}
-                                className="form-select"
-                                required
-                            >
-                                <option value="">Select a genre</option>
-                                {genres.map((genre) => (
-                                    <option key={genre.id} value={genre.id}>{genre.name}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="price" className="form-label">Price:</label>
+        <div className="container mt-4" style={{ maxWidth: '600px' }}>
+            <div className="glass-panel">
+                <h3 className="mb-4">{title}</h3>
+                {errorList.length > 0 && (
+                    <div className="mb-4">
+                        {errorList.map((error, index) => (
+                            <div key={index} className="alert alert-danger border-0">
+                                <i className="bi bi-exclamation-triangle me-2"></i>
+                                {error}
+                            </div>
+                        ))}
+                    </div>
+                )}
+                
+                <form onSubmit={handleSubmit} encType="multipart/form-data">
+                    <div className="mb-3">
+                        <label htmlFor="name" className="form-label">Name:</label>
+                        <input
+                            id="name"
+                            name="name"
+                            type="text"
+                            value={game.name}
+                            onChange={handleInputChange}
+                            className="form-control"
+                            required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="genre" className="form-label">Genre:</label>
+                        <select
+                            id="genre"
+                            name="genreId"
+                            value={game.genreId || ''}
+                            onChange={handleInputChange}
+                            className="form-select"
+                            required
+                        >
+                            <option value="">Select a genre</option>
+                            {genres.map((genre) => (
+                                <option key={genre.id} value={genre.id}>{genre.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="price" className="form-label">Price:</label>
+                        <div className="input-group">
+                            <span className="input-group-text border-0 bg-transparent text-muted" style={{ position: 'absolute', zIndex: 10, left: '12px', top: '6px' }}>$</span>
                             <input
                                 id="price"
                                 name="price"
@@ -150,28 +153,34 @@ const EditGame: React.FC = () => {
                                 value={game.price}
                                 onChange={handleInputChange}
                                 className="form-control"
+                                style={{ paddingLeft: '38px' }}
                                 required
                                 min="1"
-                                max="100"
-                                step="0.01"
+                                step="1"
                             />
                         </div>
-                        <div className="mb-3">
-                            <label htmlFor="releaseDate" className="form-label">Release Date:</label>
-                            <input
-                                id="releaseDate"
-                                name="releaseDate"
-                                type="date"
-                                value={game.releaseDate}
-                                onChange={handleInputChange}
-                                className="form-control"
-                                required
-                            />
-                        </div>
-                        <button type="submit" className="btn btn-primary me-1">Save</button>
-                        <button type="button" className="btn btn-secondary" onClick={() => navigate('/')}>Cancel</button>
-                    </form>
-                </div>
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="releaseDate" className="form-label">Release Date:</label>
+                        <input
+                            id="releaseDate"
+                            name="releaseDate"
+                            type="date"
+                            value={game.releaseDate}
+                            onChange={handleInputChange}
+                            className="form-control text-muted"
+                            required
+                        />
+                    </div>
+                    <div className="d-flex justify-content-end mt-4">
+                        <button type="button" className="btn btn-secondary me-2 bg-transparent border-0 text-muted" onClick={() => navigate('/')}>
+                            Cancel
+                        </button>
+                        <button type="submit" className="btn btn-primary px-4 shadow-sm">
+                            Save
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     );

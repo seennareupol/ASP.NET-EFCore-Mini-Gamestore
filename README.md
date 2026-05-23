@@ -28,7 +28,7 @@ dotnet run
 ```
 
 This will automatically restore dependencies, apply database migrations, and start the API. The API will start at:
-`http://localhost:5159`
+`http://localhost:5018`
 
 You can test the API endpoints using the included `games.http` file (requires REST Client extension in VS Code).
 

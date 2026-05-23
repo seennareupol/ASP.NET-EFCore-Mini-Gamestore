@@ -26,25 +26,31 @@ class GenresClient {
     }
   }
 
-  private async handleFetchError(response: Response): Promise<string[]> {
-    let errorMessages: string[] = ['Unknown error'];
-    try {
-      const errorData = await response.json();
-      if (errorData.title) {
-        errorMessages = [errorData.title];
-        if (errorData.errors && Array.isArray(errorData.errors)) {
-          errorMessages = errorMessages.concat(errorData.errors);
+    private async handleFetchError(response: Response): Promise<string[]> {
+        let errorMessages: string[] = [`Server error: ${response.status} ${response.statusText}`];
+        try {
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                const errorData = await response.json();
+                if (errorData.title) {
+                    errorMessages = [errorData.title];
+                    if (errorData.errors && Array.isArray(errorData.errors)) {
+                        errorMessages = errorMessages.concat(errorData.errors);
+                    }
+                } else if (errorData.errors && Array.isArray(errorData.errors)) {
+                    errorMessages = errorData.errors;
+                } else if (errorData.detail) {
+                    errorMessages = [errorData.detail];
+                }
+            } else {
+                const textData = await response.text();
+                console.error('Received non-JSON error response:', textData.substring(0, 500));
+            }
+        } catch (e) {
+            console.error('Error handling fetch error:', e);
         }
-      } else if (errorData.errors && Array.isArray(errorData.errors)) {
-        errorMessages = errorData.errors;
-      } else if (errorData.detail) {
-        errorMessages = [errorData.detail];
-      }
-    } catch (e) {
-      console.error('Error parsing error response:', e);
-    }
-    return errorMessages;
-  }  
+        return errorMessages;
+    }  
 }
 
 export default GenresClient;
